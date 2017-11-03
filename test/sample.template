@@ -1,0 +1,6 @@
+a, b
+Hello {{ a }},
+
+Be safe.
+
+From your friend {{ b }}.
