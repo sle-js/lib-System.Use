@@ -44,5 +44,5 @@ module.exports = Unit.Suite("UseTest")([
     thenTest("Use template tool with Bob and Mary")(
         Use.useOn("file:" + path("./TemplateTool"))(path("./sample.template"))
             .then(template => Promise.all([template("Bob")("Mary"), FileSystem.readFile(path("./BobMaryResult.txt"))])))(
-        _ => Assertion.equals(_[0])(_[1]))
+        okay => Assertion.equals(okay[0])(okay[1]))
 ]);
