@@ -3,6 +3,15 @@ const FileSystem = require("./src/FileSystem");
 const String = require("./src/String");
 
 
+const promiseMRequire = name => {
+    try {
+        return Promise.resolve(mrequire("core:" + name));
+    } catch (e) {
+        return Promise.reject(e);
+    }
+};
+
+
 const promiseRequire = name => {
     try {
         return Promise.resolve(require(name));
@@ -30,6 +39,7 @@ const use = fileName =>
 
 
 const handlers = {
+    "core:": promiseMRequire,
     "file:": promiseRequire
 };
 

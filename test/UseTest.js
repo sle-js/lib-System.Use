@@ -36,7 +36,7 @@ module.exports = Unit.Suite("UseTest")([
 
     catchTest("Unknown Tool Provider")(
         Use.useOn("bob:./this_is_not_a_valid_tool_name")("./src"))(
-        err => Assertion.equals(toString(err))(toString(Errors.UnknownToolProvider("bob:")(["file:"])))),
+        err => Assertion.equals(toString(err))(toString(Errors.UnknownToolProvider("bob:")(["core:", "file:"])))),
 
     catchTest("Unknown Tool")(
         Use.useOn("file:./this_is_not_a_valid_tool_name")("./src"))(
