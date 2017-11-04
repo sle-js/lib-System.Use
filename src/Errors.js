@@ -5,15 +5,15 @@
 
 
 const UnknownToolNameFormat = name =>
-    ({package: "lib-System.Use", kind: "UnknownToolNameFormat", name});
+    ({package: "System.Use", kind: "UnknownToolNameFormat", name});
 
 
 const UnknownToolProvider = provider => valid =>
-    ({package: "lib-System.Use", kind: "UnknownToolProvider", provider, valid});
+    ({package: "System.Use", kind: "UnknownToolProvider", provider, valid});
 
 
 const UnknownTool = name =>
-    ({package: "lib-System.Use", kind: "UnknownTool", name});
+    ({package: "System.Use", kind: "UnknownTool", name});
 
 
 module.exports = {
