@@ -15,6 +15,12 @@ const path = relativeName =>
     Path.join(Path.dirname(__filename), relativeName);
 
 
+const thenTest = name => promise => thenAssertion =>
+    promise
+        .then(okay => Unit.Test(name)(thenAssertion(okay)))
+        .catch(err => Unit.Test(name)(Assertion.fail("Error handler raised: " + err)));
+
+
 const catchTest = name => promise => errorAssertion =>
     promise
         .then(_ => Unit.Test(name)(Assertion.fail(toString(_))))
@@ -33,5 +39,10 @@ module.exports = Unit.Suite("UseTest")([
 
     catchTest("Unknown Tool")(
         Use.useOn("file:./this_is_not_a_valid_tool_name")("./src"))(
-        err => Assertion.equals(toString(err))(toString(Errors.UnknownTool("file:./this_is_not_a_valid_tool_name"))))
+        err => Assertion.equals(toString(err))(toString(Errors.UnknownTool("file:./this_is_not_a_valid_tool_name")))),
+
+    thenTest("Use template tool with Bob and Mary")(
+        Use.useOn("file:" + path("./TemplateTool"))(path("./sample.template"))
+            .then(template => Promise.all([template("Bob")("Mary"), FileSystem.readFile(path("./BobMaryResult.txt"))])))(
+        _ => Assertion.equals(_[0])(_[1]))
 ]);

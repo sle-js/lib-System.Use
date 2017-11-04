@@ -52,10 +52,12 @@ const useOn = toolName => fileName => {
 
     return loadTool(toolName)
         .then(tool => {
-            // const targetFileName =
-            //     tool.target(fileName);
+            const targetFileName =
+                tool.target(fileName);
 
-            return tool;
+            return tool
+                .translate(fileName)
+                .then(_ => promiseRequire(targetFileName));
         });
 };
 
