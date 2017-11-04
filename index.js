@@ -33,27 +33,22 @@ const handlers = {
 
 
 const useOn = toolName => fileName => {
-    const loadTool = toolName => {
-        const indexOfColon =
-            String.indexOf(":")(toolName);
+    const loadTool = toolName =>
+        String.indexOf(":")(toolName).reduce(
+            () => Promise.reject(Errors.UnknownToolNameFormat(toolName)))(
+            index => {
+                const handlerName =
+                    String.substring(0)(index + 1)(toolName);
 
-        if (indexOfColon.isNothing()) {
-            return Promise.reject(Errors.UnknownToolNameFormat(toolName));
-        } else {
-            const handlerName =
-                String.substring(0)(indexOfColon.withDefault(0) + 1)(toolName);
+                const handlerArgument =
+                    String.drop(index + 1)(toolName);
 
-            const handlerArgument =
-                String.drop(indexOfColon.withDefault(0) + 1)(toolName);
-
-            if (handlers.hasOwnProperty(handlerName)) {
-                return handlers[handlerName](handlerArgument)
-                    .catch(_ => Promise.reject(Errors.UnknownTool(toolName)));
-            } else {
-                return Promise.reject(Errors.UnknownToolProvider(handlerName)(Object.keys(handlers)));
-            }
-        }
-    };
+                return (handlers.hasOwnProperty(handlerName))
+                    ? handlers[handlerName](handlerArgument)
+                        .catch(_ => Promise.reject(Errors.UnknownTool(toolName)))
+                    : Promise
+                        .reject(Errors.UnknownToolProvider(handlerName)(Object.keys(handlers)));
+            });
 
     return loadTool(toolName)
         .then(tool => {
