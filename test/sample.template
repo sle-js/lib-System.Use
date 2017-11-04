@@ -1,6 +1,6 @@
 a, b
-Hello {{ a }},
+Hello <% a %>,
 
 Be safe.
 
-From your friend {{ b }}.
+From your friend <% b %>.
