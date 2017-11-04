@@ -13,13 +13,15 @@ const promiseRequire = name => {
 
 
 const fileExists = fileName =>
-    FileSystem.stat(fileName)
+    FileSystem
+        .stat(fileName)
         .then(stat => stat.isFile())
         .catch(_ => false);
 
 
 const modificationTime = fileName =>
-    FileSystem.stat(fileName)
+    FileSystem
+        .stat(fileName)
         .then(stat => stat.mtime);
 
 
@@ -50,28 +52,28 @@ const loadTool = toolName =>
         });
 
 
-const compile = tool => fileName => {
-    console.log(`Compiling ${fileName}`);
+const compile = tool => sourceName => {
+    console.log(`Compiling ${sourceName}`);
 
     return tool
-        .translate(fileName)
-        .then(_ => promiseRequire(tool.target(fileName)));
+        .translate(sourceName)
+        .then(_ => promiseRequire(tool.target(sourceName)));
 };
 
 
-const useOn = toolName => fileName =>
+const useOn = toolName => sourceName =>
     loadTool(toolName)
         .then(tool => {
-            const targetFileName =
-                tool.target(fileName);
+            const targetName =
+                tool.target(sourceName);
 
-            return fileExists(targetFileName)
+            return fileExists(targetName)
                 .then(exists => exists
-                    ? Promise.all([modificationTime(fileName), modificationTime(targetFileName)])
+                    ? Promise.all([modificationTime(sourceName), modificationTime(targetName)])
                         .then(times => times[0] < times[1]
-                            ? promiseRequire(targetFileName)
-                            : compile(tool)(fileName))
-                    : compile(tool)(fileName));
+                            ? promiseRequire(targetName)
+                            : compile(tool)(sourceName))
+                    : compile(tool)(sourceName));
         });
 
 
