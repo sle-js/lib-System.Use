@@ -2,6 +2,7 @@ const Assertion = require("./Libs").Assertion;
 const Errors = require("./../src/Errors");
 const FileSystem = require("../src/FileSystem");
 const Path = require('path');
+const TemplateErrors = require("./Errors");
 const Unit = require("./Libs").Unit;
 
 const Use = require("./../index");
@@ -40,6 +41,10 @@ module.exports = Unit.Suite("UseTest")([
     catchTest("Unknown Tool")(
         Use.useOn("file:./this_is_not_a_valid_tool_name")("./src"))(
         err => Assertion.equals(toString(err))(toString(Errors.UnknownTool("file:./this_is_not_a_valid_tool_name")))),
+
+    catchTest("Use template tool with unknown template")(
+        Use.useOn("file:" + path("./TemplateTool"))(path("./samples.template")))(
+        err => Assertion.equals(toString(err))(toString(TemplateErrors.TemplateFileDoesNotExist(path("./samples.template"))))),
 
     thenTest("Use template tool with Bob and Mary")(
         Use.useOn("file:" + path("./TemplateTool"))(path("./sample.template"))

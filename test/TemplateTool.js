@@ -1,4 +1,5 @@
 const Array = mrequire("core:Native.Data.Array:1.1.0");
+const Errors = require("./Errors");
 const FileSystem = require("../src/FileSystem");
 const Path = require("path");
 const String = require("../src/String");
@@ -82,17 +83,22 @@ const toJavaScript = template => {
 };
 
 
+const readFile = name =>
+    FileSystem
+        .readFile(name)
+        .catch(_ => Promise.reject(Errors.TemplateFileDoesNotExist(name)));
+
+
 const translate = fileName => {
     const targetFileName =
         replaceExtension(".js")(fileName);
 
-    return FileSystem
-        .readFile(fileName)
+    return readFile(fileName)
         .then(parse)
         .then(validate)
         .then(_ => ({variables: _.variables, template: toJavaScript(_.template)}))
         .then(_ => "const process = " + _.variables.map(i => i + " => ").join("") + "{\n" + _.template + "\n" + "};\n\n\nmodule.exports = process;\n")
-        .then(FileSystem.writeFile(targetFileName));
+        .then(content => FileSystem.writeFile(targetFileName)(content));
 };
 
 
