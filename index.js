@@ -50,7 +50,7 @@ const loadTool = toolName =>
         });
 
 
-        const useOn = toolName => fileName =>
+const useOn = toolName => fileName =>
     loadTool(toolName)
         .then(tool => {
             const targetFileName =
