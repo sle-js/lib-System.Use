@@ -32,25 +32,26 @@ const handlers = {
 };
 
 
-const useOn = toolName => fileName => {
-    const loadTool = toolName =>
-        String.indexOf(":")(toolName).reduce(
-            () => Promise.reject(Errors.UnknownToolNameFormat(toolName)))(
-            index => {
-                const handlerName =
-                    String.substring(0)(index + 1)(toolName);
+const loadTool = toolName =>
+    String.indexOf(":")(toolName).reduce(
+        () => Promise.reject(Errors.UnknownToolNameFormat(toolName)))(
+        index => {
+            const handlerName =
+                String.substring(0)(index + 1)(toolName);
 
-                const handlerArgument =
-                    String.drop(index + 1)(toolName);
+            const handlerArgument =
+                String.drop(index + 1)(toolName);
 
-                return (handlers.hasOwnProperty(handlerName))
-                    ? handlers[handlerName](handlerArgument)
-                        .catch(_ => Promise.reject(Errors.UnknownTool(toolName)))
-                    : Promise
-                        .reject(Errors.UnknownToolProvider(handlerName)(Object.keys(handlers)));
-            });
+            return (handlers.hasOwnProperty(handlerName))
+                ? handlers[handlerName](handlerArgument)
+                    .catch(_ => Promise.reject(Errors.UnknownTool(toolName)))
+                : Promise
+                    .reject(Errors.UnknownToolProvider(handlerName)(Object.keys(handlers)));
+        });
 
-    return loadTool(toolName)
+
+        const useOn = toolName => fileName =>
+    loadTool(toolName)
         .then(tool => {
             const targetFileName =
                 tool.target(fileName);
@@ -59,7 +60,6 @@ const useOn = toolName => fileName => {
                 .translate(fileName)
                 .then(_ => promiseRequire(targetFileName));
         });
-};
 
 
 module.exports = {
