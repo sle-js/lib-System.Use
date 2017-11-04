@@ -1,19 +1,19 @@
 // data Errors =
-//      UnknownToolNameFormat { name :: String }
-//    | UnknownToolProvider { provider :: String, valid :: Array String }
-//    | UnknownTool { name :: String }
+//      UnknownToolNameFormat { package :: String, name :: String }
+//    | UnknownToolProvider { package :: String, provider :: String, valid :: Array String }
+//    | UnknownTool { package :: String, name :: String }
 
 
 const UnknownToolNameFormat = name =>
-    ({kind: "UnknownToolNameFormat", name});
+    ({package: "lib-System.Use", kind: "UnknownToolNameFormat", name});
 
 
 const UnknownToolProvider = provider => valid =>
-    ({kind: "UnknownToolProvider", provider, valid});
+    ({package: "lib-System.Use", kind: "UnknownToolProvider", provider, valid});
 
 
 const UnknownTool = name =>
-    ({kind: "UnknownTool", name});
+    ({package: "lib-System.Use", kind: "UnknownTool", name});
 
 
 module.exports = {
