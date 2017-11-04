@@ -50,15 +50,28 @@ const loadTool = toolName =>
         });
 
 
+const compile = tool => fileName => {
+    console.log(`Compiling ${fileName}`);
+
+    return tool
+        .translate(fileName)
+        .then(_ => promiseRequire(tool.target(fileName)));
+};
+
+
 const useOn = toolName => fileName =>
     loadTool(toolName)
         .then(tool => {
             const targetFileName =
                 tool.target(fileName);
 
-            return tool
-                .translate(fileName)
-                .then(_ => promiseRequire(targetFileName));
+            return fileExists(targetFileName)
+                .then(exists => exists
+                    ? Promise.all([modificationTime(fileName), modificationTime(targetFileName)])
+                        .then(times => times[0] < times[1]
+                            ? promiseRequire(targetFileName)
+                            : compile(tool)(fileName))
+                    : compile(tool)(fileName));
         });
 
 
