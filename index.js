@@ -1,6 +1,6 @@
 const Errors = require("./src/Errors");
 const FileSystem = require("./src/Libs").FileSystem;
-const String = require("./src/String");
+const String = require("./src/Libs").String;
 
 
 const promiseMRequire = name => {
