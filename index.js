@@ -34,10 +34,6 @@ const modificationTime = fileName =>
         .then(stat => stat.mtime);
 
 
-const use = fileName =>
-    "";
-
-
 const handlers = {
     "core:": promiseMRequire,
     "file:": promiseRequire
@@ -88,6 +84,5 @@ const useOn = toolName => sourceName =>
 
 
 module.exports = {
-    use,
     useOn
 };
