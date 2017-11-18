@@ -1,6 +1,6 @@
 const Array = mrequire("core:Native.Data.Array:1.1.0");
 const Errors = require("./Errors");
-const FileSystem = require("../src/FileSystem");
+const FileSystem = require("./../src/Libs").FileSystem;
 const Path = require("path");
 const String = require("../src/String");
 

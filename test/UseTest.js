@@ -1,6 +1,6 @@
 const Assertion = require("./Libs").Assertion;
 const Errors = require("./../src/Errors");
-const FileSystem = require("../src/FileSystem");
+const FileSystem = require("./../src/Libs").FileSystem;
 const Path = require('path');
 const TemplateErrors = require("./Errors");
 const Unit = require("./Libs").Unit;

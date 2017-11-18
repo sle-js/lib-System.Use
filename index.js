@@ -1,5 +1,5 @@
 const Errors = require("./src/Errors");
-const FileSystem = require("./src/FileSystem");
+const FileSystem = require("./src/Libs").FileSystem;
 const String = require("./src/String");
 
 
