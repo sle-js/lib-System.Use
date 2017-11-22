@@ -1,0 +1,4 @@
+interface Node {
+    kind: "Node";
+    name: string;
+}

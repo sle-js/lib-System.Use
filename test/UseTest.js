@@ -49,5 +49,10 @@ module.exports = Unit.Suite("UseTest")([
     thenTest("Use template tool with Bob and Mary")(
         Use.useOn("file:" + path("./TemplateTool"))(path("./sample.template"))
             .then(template => Promise.all([template("Bob")("Mary"), FileSystem.readFile(path("./BobMaryResult.txt"))])))(
-        okay => Assertion.equals(okay[0])(okay[1]))
+        okay => Assertion.equals(okay[0])(okay[1])),
+
+    thenTest("Use core:Tool.ESTree:1.0.3 with SampleAST.template")(
+        Use.useOn("core:Tool.ESTree:1.0.3")(path("./SampleAST.estree")))(
+        okay => Assertion.AllGood)
+
 ]);
