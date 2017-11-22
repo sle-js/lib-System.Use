@@ -3,24 +3,6 @@ const FileSystem = require("./src/Libs").FileSystem;
 const String = require("./src/Libs").String;
 
 
-const promiseMRequire = name => {
-    try {
-        return Promise.resolve(mrequire("core:" + name));
-    } catch (e) {
-        return Promise.reject(e);
-    }
-};
-
-
-const promiseRequire = name => {
-    try {
-        return Promise.resolve(require(name));
-    } catch (e) {
-        return Promise.reject(e);
-    }
-};
-
-
 const fileExists = fileName =>
     FileSystem
         .stat(fileName)
@@ -35,8 +17,8 @@ const modificationTime = fileName =>
 
 
 const handlers = {
-    "core:": promiseMRequire,
-    "file:": promiseRequire
+    "core:": name => $import("core:" + name),
+    "file:": $import
 };
 
 
@@ -63,7 +45,7 @@ const compile = tool => sourceName => {
 
     return tool
         .translate(sourceName)
-        .then(_ => promiseRequire(tool.target(sourceName)));
+        .then(_ => $import(tool.target(sourceName)));
 };
 
 
@@ -77,7 +59,7 @@ const useOn = toolName => sourceName =>
                 .then(exists => exists
                     ? Promise.all([modificationTime(sourceName), modificationTime(targetName)])
                         .then(times => times[0] < times[1]
-                            ? promiseRequire(targetName)
+                            ? $import(targetName)
                             : compile(tool)(sourceName))
                     : compile(tool)(sourceName));
         });
